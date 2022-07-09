@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test_api</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <center>
+    <form action="" method="">
+        <br>
+        <br>
+        <textarea name="content" id="content" style="width: 70%; height: 300px; font-size: 15px; line-height: 15px;padding: 7px;"></textarea>
+        <br>
+        <br>
+        <input type="button" id="do_submmit" value="提交" style="
+                width: 100px;
+                height: 45px;
+                line-height: 45px;
+                background: beige;
+                color: black;
+                border-radius: 45px;
+                border: 0px;
+        ">
+
+        <br>
+        <br>
+        <div id="show_text"></div>
+        <br>
+    </form>
+    </center>
+    <div STYLE="width: 70%;margin: auto;">
+        <div style="color: red;">[标题]</div>
+        <div id="title"></div>
+        <br>
+        <div style="color: red;">[摘要]</div>
+        <div id="summary"></div>
+    </div>
+
+
+
+
+</body>
+<script>
+    $(function(){
+        var btn_flag = false;
+        $('#do_submmit').click(function () {
+            if(btn_flag){
+                return false;
+            }
+            btn_flag = true;
+            var data = {};
+            data.content = $('#content').val();
+            if (data.content==''){
+                alert('请输入文章内容');
+                btn_flag = false;
+                return false;
+            }
+            $('#show_text').html('生成中...');
+            console.log(data);
+            $.post('http://127.0.0.1:8999/generate', data, function (res) {
+                console.log(res);
+                $('#show_text').html('生成完毕');
+                $('#title').html(res.title);
+                $('#summary').html(res.summary);
+                btn_flag = false;
+                setTimeout(function () {
+                    $('#show_text').html('');
+                },2000);
+            });
+        });
+    });
+</script>
+</html>
